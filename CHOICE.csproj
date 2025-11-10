@@ -5,7 +5,7 @@
 	  <Nullable>enable</Nullable>
 	  <ImplicitUsings>enable</ImplicitUsings>
 	  <Nullable>disable</Nullable>
-    <UserSecretsId>aspnet-GROUPCHOICE-7939A8EF-89B2-46F3-9E64-E33629F164CB</UserSecretsId>
+    <UserSecretsId>aspnet-CHOICE-7939A8EF-89B2-46F3-9E64-E33629F164CB</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
