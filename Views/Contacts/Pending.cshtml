@@ -1,0 +1,24 @@
+﻿@model List<PendingContactViewModel>
+@{
+    ViewData["Title"] = "Pending Requests";
+}
+
+<h2>Pending Contact Requests</h2>
+
+@if (!Model.Any())
+{
+    <p>No pending requests.</p>
+}
+else
+{
+    @foreach (var request in Model)
+    {
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <span>@request.UserName</span>
+            <form asp-action="Accept" method="post">
+                <input type="hidden" name="userName" value="@request.UserName" />
+                <button type="submit" class="btn btn-success btn-sm">Accept</button>
+            </form>
+        </div>
+    }
+}

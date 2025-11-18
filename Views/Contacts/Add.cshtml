@@ -1,0 +1,20 @@
+﻿@{
+    ViewData["Title"] = "Add Contact";
+}
+
+<h2>Add Contact</h2>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<form asp-action="Add">
+    <div class="form-group">
+        <label for="userName">Username:</label>
+        <input type="text" class="form-control" name="userName" required />
+    </div>
+    <br>
+    <button type="submit" class="btn btn-primary">Send Request</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
