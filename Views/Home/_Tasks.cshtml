@@ -1,7 +1,9 @@
 ﻿@model IEnumerable<TaskViewModel>
 @inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = "Home Page";
+    var user = UserManager.GetUserAsync(User).Result;
 }
 
 <div class="w-25 input-group mb-3">
@@ -25,6 +27,9 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.IsImportant)
+            </th>
+            <th>
+                Creator
             </th>
             <th></th>
         </tr>
@@ -51,6 +56,9 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.IsImportant)
+                </td>
+                <td>
+                    @user.FirstName
                 </td>
                 <td>
                     <a class="btn btn-primary btn-sm" asp-action="Edit" asp-route-id="@item.Id" asp-route-returnurl="@Context.Request.Path">Edit</a>
