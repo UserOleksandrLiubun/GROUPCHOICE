@@ -1,12 +1,12 @@
 ﻿@model IEnumerable<TaskViewModel>
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
+@inject ApplicationDbContext _context
 @{
     ViewData["Title"] = "Home Page";
-    var user = UserManager.GetUserAsync(User).Result;
 }
 
-<div class="w-25 input-group mb-3">
+<div class="input-group mb-3">
     <input id="search" type="text" class="form-control" placeholder="Search" aria-describedby="basic-addon2" onchange="search()">
     <div class="input-group-append">
         <button class="btn btn-outline-secondary" type="button" onchange="search()">Button</button>
@@ -58,6 +58,9 @@
                     @Html.DisplayFor(modelItem => item.IsImportant)
                 </td>
                 <td>
+                    @{
+                        var user = UserManager.FindByIdAsync(item.UserId).Result;
+                    }
                     @user.FirstName @user.LastName
                 </td>
                 <td>

@@ -34,25 +34,25 @@ public class HomeController : Controller
         {
             return Redirect("/Account/Login");
         }
-        return View(_mapper.Map<IEnumerable<DBTask>, IEnumerable<TaskViewModel>>(await _context.Tasks.Where(item => item.UserId == user.Id && !item.IsCompleted && (string.IsNullOrEmpty(q) ? true : item.Name.ToLower().Contains(q))).ToListAsync()));
+        return View(_mapper.Map<IEnumerable<DBTask>, IEnumerable<TaskViewModel>>(await _context.Tasks.Where(item => (item.UserId == user.Id || item.UserIDsGrantedAccess.Contains(user.Id)) && !item.IsCompleted && (string.IsNullOrEmpty(q) ? true : item.Name.ToLower().Contains(q))).ToListAsync()));
     }
 
     public async Task<IActionResult> Important(string q = "")
     {
         var user = await _userManager.GetUserAsync(User);
-        return View(_mapper.Map<IEnumerable<DBTask>, IEnumerable<TaskViewModel>>(await _context.Tasks.Where(item => item.UserId == user.Id && item.IsImportant && !item.IsCompleted && (string.IsNullOrEmpty(q) ? true : item.Name.ToLower().Contains(q))).ToListAsync()));
+        return View(_mapper.Map<IEnumerable<DBTask>, IEnumerable<TaskViewModel>>(await _context.Tasks.Where(item => (item.UserId == user.Id || item.UserIDsGrantedAccess.Contains(user.Id)) && item.IsImportant && !item.IsCompleted && (string.IsNullOrEmpty(q) ? true : item.Name.ToLower().Contains(q))).ToListAsync()));
     }
 
     public async Task<IActionResult> Planned(string q = "")
     {
         var user = await _userManager.GetUserAsync(User);
-        return View(_mapper.Map<IEnumerable<DBTask>, IEnumerable<TaskViewModel>>(await _context.Tasks.Where(item => item.UserId == user.Id && item.DueDate != null && !item.IsCompleted && (string.IsNullOrEmpty(q) ? true : item.Name.ToLower().Contains(q))).ToListAsync()));
+        return View(_mapper.Map<IEnumerable<DBTask>, IEnumerable<TaskViewModel>>(await _context.Tasks.Where(item => (item.UserId == user.Id || item.UserIDsGrantedAccess.Contains(user.Id)) && item.DueDate != null && !item.IsCompleted && (string.IsNullOrEmpty(q) ? true : item.Name.ToLower().Contains(q))).ToListAsync()));
     }
 
     public async Task<IActionResult> Completed(string q = "")
     {
         var user = await _userManager.GetUserAsync(User);
-        return View(_mapper.Map<IEnumerable<DBTask>, IEnumerable<TaskViewModel>>(await _context.Tasks.Where(item => item.UserId == user.Id && item.IsCompleted && (string.IsNullOrEmpty(q) ? true : item.Name.ToLower().Contains(q))).ToListAsync()));
+        return View(_mapper.Map<IEnumerable<DBTask>, IEnumerable<TaskViewModel>>(await _context.Tasks.Where(item => (item.UserId == user.Id || item.UserIDsGrantedAccess.Contains(user.Id)) && item.IsCompleted && (string.IsNullOrEmpty(q) ? true : item.Name.ToLower().Contains(q))).ToListAsync()));
     }
 
     public async Task<IActionResult> Create(string returnUrl = null)
