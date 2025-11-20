@@ -5,6 +5,7 @@ public class TaskViewModel
 {
     public int Id { get; set; }
     public string? UserId { get; set; }
+    public string? EditorId { get; set; }
     [Display(Name = "Due Date")]
     public DateTime? DueDate { get; set; }
     [Required]

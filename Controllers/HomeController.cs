@@ -63,14 +63,14 @@ public class HomeController : Controller
     public async Task<IActionResult> Edit(int id)
     {
         var user = await _userManager.GetUserAsync(User);
-        return View(_mapper.Map<TaskViewModel>(_context.Tasks.First(item => item.UserId == user.Id && item.Id == id)));
+        return View(_mapper.Map<TaskViewModel>(_context.Tasks.First(item => (item.UserId == user.Id || item.UserIDsGrantedAccess.Contains(user.Id)) && item.Id == id)));
     }
 
     [HttpPatch]
     public async Task<IActionResult> Complete(int id, string returnUrl = null)
     {
         var user = await _userManager.GetUserAsync(User);
-        var task = _context.Tasks.First(item => item.UserId == user.Id && item.Id == id);
+        var task = _context.Tasks.First(item => (item.UserId == user.Id || item.UserIDsGrantedAccess.Contains(user.Id)) && item.Id == id);
         task.IsCompleted = !task.IsCompleted;
         _context.Update(task);
         await _context.SaveChangesAsync();
@@ -81,7 +81,7 @@ public class HomeController : Controller
     public async Task<IActionResult> Edit(TaskViewModel model, string returnUrl = null)
     {
         var user = await _userManager.GetUserAsync(User);
-        var task = _context.Tasks.First(item => item.UserId == user.Id && item.Id == model.Id);
+        var task = _context.Tasks.First(item => (item.UserId == user.Id || item.UserIDsGrantedAccess.Contains(user.Id)) && item.Id == model.Id);
         model.UserId = task.UserId;
         _mapper.Map(model, task);
         task.EditorId = user.Id;
@@ -112,7 +112,7 @@ public class HomeController : Controller
     public async Task<IActionResult> Delete(int id, string returnUrl = null)
     {
         var user = await _userManager.GetUserAsync(User);
-        _context.Remove(_context.Tasks.First(item => item.UserId == user.Id && item.Id == id));
+        _context.Remove(_context.Tasks.First(item => (item.UserId == user.Id || item.UserIDsGrantedAccess.Contains(user.Id)) && item.Id == id));
         _context.SaveChanges();
         return RedirectToLocal(returnUrl);
     }

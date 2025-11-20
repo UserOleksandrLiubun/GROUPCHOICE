@@ -1,9 +1,17 @@
-﻿@model TaskViewModel
+﻿@inject UserManager<ApplicationUser> UserManager
+@model TaskViewModel
 @{
     ViewData["Title"] = "Edit Task";
+    var user = UserManager.FindByIdAsync(Model.UserId).Result;
+    var editor = UserManager.FindByIdAsync(Model.EditorId).Result;
 }
-
 <h2>@ViewData["Title"]</h2>
+<b>Creator:</b> @user.FirstName @user.LastName (@user.UserName)
+@if (Model.UserId != Model.EditorId)
+{
+    <br/>
+    <b>Last Editor:</b> @(editor.FirstName + " " + editor.LastName + " (" +editor.UserName + ")")
+}
 <div class="row">
     <div class="col-md-4">
         <section>
