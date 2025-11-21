@@ -21,6 +21,7 @@ public class CreateVoteViewModel
     public string UsersIDs { get; set; }
 
     public List<VoteCriteriaViewModel> Criteria { get; set; } = new();
+    public List<Contact> Contacts { get; set; } = new();
 }
 
 public class VoteCriteriaViewModel
@@ -81,8 +82,9 @@ public class VotesController : Controller
         return View(votes);
     }
 
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
+        var user = await _userManager.GetUserAsync(User);
         var model = new CreateVoteViewModel
         {
             Criteria = new List<VoteCriteriaViewModel>
@@ -90,7 +92,8 @@ public class VotesController : Controller
                 new VoteCriteriaViewModel(),
                 new VoteCriteriaViewModel(),
                 new VoteCriteriaViewModel()
-            }
+            },
+            Contacts = _context.Contacts.Where((item) => item.UserId.Contains(user.Id) || item.ContactUserId.Contains(user.Id)).ToList()
         };
         return View(model);
     }
