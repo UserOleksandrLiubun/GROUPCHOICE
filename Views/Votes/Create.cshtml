@@ -38,10 +38,10 @@
 
     <div class="form-group">
         <label>Select Participants</label>
-        <select asp-for="UsersIDs" class="form-control" multiple="multiple" size="1">
+        <select asp-for="UsersIDs" class="form-control" multiple="multiple" size="5">
             @foreach (var contact in Model.Contacts)
             {
-                <option value="@contact.UserId">@contact.UserId</option>
+                <option value="@contact.UserId">@contact</option>
             }
         </select>
         <span asp-validation-for="UsersIDs" class="text-danger"></span>

@@ -89,8 +89,6 @@ public class VotesController : Controller
         {
             Criteria = new List<VoteCriteriaViewModel>
             {
-                new VoteCriteriaViewModel(),
-                new VoteCriteriaViewModel(),
                 new VoteCriteriaViewModel()
             },
             Contacts = _context.Contacts.Where((item) => item.UserId.Contains(user.Id) || item.ContactUserId.Contains(user.Id)).ToList()
