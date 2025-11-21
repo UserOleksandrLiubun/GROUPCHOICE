@@ -1,4 +1,5 @@
 ﻿@model CreateVoteViewModel
+@inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = "Create New Vote";
 }
@@ -41,7 +42,8 @@
         <select asp-for="UsersIDs" class="form-control" multiple="multiple" size="5">
             @foreach (var contact in Model.Contacts)
             {
-                <option value="@contact.UserId">@contact</option>
+                var user = UserManager.FindByIdAsync(contact.UserId).Result;
+                <option value="@contact.UserId">@user.FirstName @user.LastName (@user.UserName)</option>
             }
         </select>
         <span asp-validation-for="UsersIDs" class="text-danger"></span>
