@@ -86,7 +86,7 @@ public class VotesController : Controller
     public async Task<IActionResult> Create()
     {
         var user = await _userManager.GetUserAsync(User);
-        await _context.Contacts.Where(item => item.UserId == user.Id || item.ContactUserId == user.Id).ToListAsync();
+        var contacts = await _context.Contacts.Where(item => item.UserId == user.Id || item.ContactUserId == user.Id).ToListAsync();
         var model = new CreateVoteViewModel
         {
             Criteria = new List<VoteCriteriaViewModel>
