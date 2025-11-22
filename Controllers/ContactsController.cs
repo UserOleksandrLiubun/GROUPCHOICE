@@ -51,7 +51,20 @@ public class ContactsController : Controller
     // POST: Contacts/Add
     [HttpPost]
     [ValidateAntiForgeryToken]
+    public async Task<IActionResult> AddContactFromSearch(string userName)
+    {
+        return await AddCONTACT(userName, "Search");
+    }
+
+    // POST: Contacts/Add
+    [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Add(string userName)
+    {
+        return await AddCONTACT(userName, "Index");
+    }
+
+    public async Task<IActionResult> AddCONTACT(string userName, string redirecntTo)
     {
         var currentUser = await _userManager.GetUserAsync(User);
         if (currentUser == null) return Challenge();
@@ -91,7 +104,7 @@ public class ContactsController : Controller
         await _context.SaveChangesAsync();
 
         TempData["Success"] = "Contact request sent successfully!";
-        return RedirectToAction("Index");
+        return RedirectToAction(redirecntTo);
     }
 
     // POST: Contacts/Delete

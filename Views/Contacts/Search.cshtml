@@ -7,6 +7,8 @@
     var currentUserId = currentUser?.Id;
 }
 
+
+
 <h2>@ViewData["Title"]</h2>
 <form method="get" asp-action="Index" asp-controller="Search">
     <div class="form-group">
@@ -50,7 +52,7 @@
                         {
                             @if (existingRequest == null)
                             {
-                                <form method="post" asp-action="Add" asp-controller="Contacts">
+                                <form method="post" asp-action="AddContactFromSearch" asp-controller="Contacts">
                                     <input type="hidden" name="userName" value="@user.UserName" />
                                     <button type="submit" class="btn btn-primary btn-sm">
                                         <i class="fas fa-user-plus"></i> Send Request
