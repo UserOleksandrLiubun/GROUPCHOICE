@@ -40,7 +40,7 @@
             @foreach (var user in Model.Users)
             {
                 var existingRequest = _context.Contacts
-                .FirstOrDefault(c => c.UserId == currentUserId && c.ContactUserId == user.Id);
+                .FirstOrDefault(c => c.UserId == currentUserId && c.ContactUserId == user.Id || c.UserId == user.Id && c.ContactUserId == currentUserId);
                 <tr>
                     <td>@user.FirstName</td>
                     <td>@user.LastName</td>
