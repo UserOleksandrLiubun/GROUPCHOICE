@@ -39,7 +39,12 @@
                     <td>@user.LastName</td>
                     <td>@user.UserName</td>
                     <td>
-
+                        <form method="post" asp-action="Add" asp-controller="Contacts">
+                            <input type="hidden" name="userName" value="@user.UserName" />
+                            <button type="submit" class="btn btn-primary btn-sm">
+                                <i class="fas fa-user-plus"></i> Send Request
+                            </button>
+                        </form>
                     </td>
                 </tr>
             }
