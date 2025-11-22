@@ -93,15 +93,16 @@ public class VotesController : Controller
         List<ApplicationUser> users = new();
         foreach (var contact in contacts)
         {
-            if (contact.UserId == contact.UserId)
-            {
-                users.Add(await _userManager.FindByIdAsync(contact.UserId));
-            }
-            else if (contact.ContactUserId == contact.UserId)
+            if (contact.UserId == user.Id)
             {
                 users.Add(await _userManager.FindByIdAsync(contact.ContactUserId));
             }
+            else if (contact.ContactUserId == user.Id)
+            {
+                users.Add(await _userManager.FindByIdAsync(contact.UserId));
+            }
         }
+        users.Add(user);
         List <SelectListItem> selects = new();
         foreach (var contactUser in users)
         {
@@ -259,10 +260,12 @@ public class VotesController : Controller
                 return View(model);
             }
 
-            var existingVotes = _context.DBVoteItems
-                .Where(v => v.DBVoteId == model.VoteId && v.UserId == userId);
-            _context.DBVoteItems.RemoveRange(existingVotes);
-
+            var existingVotes = await _context.DBVoteItems
+                .Where(v => v.DBVoteId == model.VoteId && v.UserId == userId).ToListAsync();
+            if (existingVotes.Count() > 0)
+            {
+                _context.DBVoteItems.RemoveRange(existingVotes);
+            }
             foreach (var criteria in model.Criteria)
             {
                 var voteItem = new DBVoteItem
