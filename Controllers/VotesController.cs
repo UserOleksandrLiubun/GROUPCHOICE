@@ -24,8 +24,7 @@ public class CreateVoteViewModel
     public List<string> UsersIDs { get; set; }
     public List<string> Alternatives { get; set; } = new();
     public List<VoteCriteriaViewModel> Criteria { get; set; } = new();
-    public List<
-        SelectListItem> Contacts { get; set; } = new();
+    public List<SelectListItem> Contacts { get; set; } = new();
 }
 
 public class VoteCriteriaViewModel
