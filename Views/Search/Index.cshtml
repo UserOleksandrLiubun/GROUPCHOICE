@@ -1,4 +1,9 @@
 @model UserSearchViewModel
+@{
+    ViewData["Title"] = "Searhc Contacts";
+}
+
+<h2>@ViewData["Title"]</h2>
 <form method="get" asp-action="Index" asp-controller="Search">
     <div class="form-group">
         <div class="input-group">
