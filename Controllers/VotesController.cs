@@ -46,6 +46,7 @@ public class VoteEvaluationViewModel
 {
     public int VoteId { get; set; }
     public string VoteTitle { get; set; }
+    public string Description { get; set; }
     public List<DBVoteAlternative> Alternatives { get; set; } = new();
     public List<EvaluationCriteriaViewModel> Criteria { get; set; } = new();
 }
@@ -205,6 +206,7 @@ public class VotesController : Controller
         var model = new VoteEvaluationViewModel
         {
             VoteId = id,
+            Description = vote.Description,
             VoteTitle = vote.Title,
             Alternatives = alternative,
             Criteria = criteria.Select(c => new EvaluationCriteriaViewModel
