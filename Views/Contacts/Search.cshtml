@@ -1,8 +1,8 @@
-@model UserSearchViewModel
+﻿@model UserSearchViewModel
 @inject UserManager<DBApplicationUser> UserManager
 @inject ApplicationDbContext _context
 @{
-    ViewData["Title"] = "Searhc Contacts";
+    ViewData["Title"] = "Пошук контактів";
     var currentUser = await UserManager.GetUserAsync(User);
     var currentUserId = currentUser?.Id;
 }
@@ -63,17 +63,17 @@
                                 <form method="post" asp-action="AddContactFromSearch" asp-controller="Contacts">
                                     <input type="hidden" name="userName" value="@user.UserName" />
                                     <button type="submit" class="btn btn-primary btn-sm">
-                                        <i class="fas fa-user-plus"></i> Send Request
+                                        <i class="fas fa-user-plus"></i> Надіслати запит
                                     </button>
                                 </form>
                             }
                             else if (existingRequest.IsAccepted)
                             {
-                                <span class="text-success">Already Contacts</span>
+                                <span class="text-success">Твій контакт</span>
                             }
                             else if (!existingRequest.IsAccepted)
                             {
-                                <span class="text-info">Request Sent</span>
+                                <span class="text-info">Запит надіслано</span>
                             }
                         }
                     </td>

@@ -1,8 +1,8 @@
 ﻿@{
-    ViewData["Title"] = "Add Contact";
+    ViewData["Title"] = "Додати контакт";
 }
 
-<h2>Add Contact</h2>
+<h2>@ViewData["Title"]</h2>
 
 @if (TempData["Error"] != null)
 {
@@ -11,10 +11,10 @@
 
 <form asp-action="Add">
     <div class="form-group">
-        <label for="userName">Username:</label>
+        <label for="userName">Ім'я користувача:</label>
         <input type="text" class="form-control" name="userName" required />
     </div>
     <br>
-    <button type="submit" class="btn btn-primary">Send Request</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    <button type="submit" class="btn btn-primary">Надіслати запит</button>
+    <a asp-action="Index" class="btn btn-secondary">Скасувати</a>
 </form>
