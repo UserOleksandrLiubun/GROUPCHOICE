@@ -6,36 +6,36 @@
     var uniqueUsers = Model.DBVoteItem.Select(v => v.UserId).Distinct().Count();
 }
 
-<h2>Results: @Model.Title</h2>
+<h2>Результати: @Model.Title</h2>
 
 <div class="row">
     <div class="col-md-12">
         <div class="card mb-4">
             <div class="card-header">
-                <h4>Vote Summary</h4>
+                <h4>Підсумок голосування</h4>
             </div>
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-3">
-                        <strong>Total Votes:</strong> @uniqueUsers
+                        <strong>Загальна кількість голосів:</strong> @uniqueUsers
                     </div>
                     <div class="col-md-3">
-                        <strong>Start Date:</strong> @Model.DBVote.StartDateTime.ToString("MMM dd, yyyy")
+                        <strong>Дата початку:</strong> @Model.DBVote.StartDateTime.ToString("MMM dd, yyyy")
                     </div>
                     <div class="col-md-3">
-                        <strong>End Date:</strong> @Model.DBVote.EndDateTime.ToString("MMM dd, yyyy")
+                        <strong>Дата закінчення:</strong> @Model.DBVote.EndDateTime.ToString("MMM dd, yyyy")
                     </div>
                     <div class="col-md-3">
-                        <strong>Status:</strong>
+                        <strong>Статус:</strong>
                         <span class="badge @(DateTime.Now < Model.DBVote.EndDateTime ? "bg-success" : "bg-secondary")">
-                            @(DateTime.Now < Model.DBVote.EndDateTime ? "Active" : "Completed")
+                            @(DateTime.Now < Model.DBVote.EndDateTime ? "Активне" : "Завершене")
                         </span>
                     </div>
                 </div>
                 @if (!string.IsNullOrEmpty(Model.DBVote.Description))
                 {
                     <div class="mt-2">
-                        <strong>Description:</strong> @Model.DBVote.Description
+                        <strong>Опис:</strong> @Model.DBVote.Description
                     </div>
                 }
             </div>
@@ -44,16 +44,16 @@
         {
             <div class="card mb-4">
                 <div class="card-header">
-                    <h4>Alternatives Overview</h4>
+                    <h4>Огляд альтернатив</h4>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead>
                                 <tr>
-                                    <th>Alternative</th>
-                                    <th>Weighted Average Score</th>
-                                    <th>Vote Count</th>
+                                    <th>Альтернатива</th>
+                                    <th>Середньозважений бал</th>
+                                    <th>Кількість голосів</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -109,7 +109,7 @@
         <!-- Detailed Results by Vote Item -->
         <div class="card mb-4">
             <div class="card-header">
-                <h4>Detailed Results by Criteria</h4>
+                <h4>Детальні результати за критеріями</h4>
             </div>
             <div class="card-body">
                 @foreach (var itemSetting in Model.DBVoteItemSettings)
@@ -128,11 +128,11 @@
 
                         <div class="row">
                             <div class="col-md-6">
-                                <strong>Value Statistics:</strong>
+                                <strong>Статистика:</strong>
                                 <ul class="list-unstyled">
-                                    <li>Average: <strong>@averageValue.ToString("F2")</strong></li>
-                                    <li>Range: @minValue.ToString("F2") - @maxValue.ToString("F2")</li>
-                                    <li>Votes: @itemVotes.Count</li>
+                                    <li>Середнє значення: <strong>@averageValue.ToString("F2")</strong></li>
+                                    <li>Діапазон значень: @minValue.ToString("F2") - @maxValue.ToString("F2")</li>
+                                    <li>Кількість голосів: @itemVotes.Count</li>
                                 </ul>
                             </div>
                             @if (itemSetting.ImportanceValue != 100) 
@@ -146,7 +146,7 @@
                         @if (Model.DBVoteAlternative.Any())
                         {
                             <div class="mt-3">
-                                <strong>Breakdown by Alternative:</strong>
+                                <strong>Розподіл за альтернативами:</strong>
                                 <div class="table-responsive mt-2">
                                     <table class="table table-sm table-bordered">
                                         <thead>
@@ -176,7 +176,7 @@
                         @if (totalVotes != 0)
                         {
                             <div class="mt-3">
-                                <strong>Value Distribution:</strong>
+                                <strong>Розподіл зачень:</strong>
                                 <div class="distribution-chart mt-2">
                                     @{
                                         var valueGroups = itemVotes.GroupBy(v => Math.Round(v.Value, 1))
