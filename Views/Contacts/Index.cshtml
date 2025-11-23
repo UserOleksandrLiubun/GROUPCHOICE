@@ -2,7 +2,7 @@
 @inject UserManager<DBApplicationUser> UserManager
 @model List<ContactViewModel>
 @{
-    ViewData["Title"] = "My Contacts";
+    ViewData["Title"] = "Мої контакти";
 }
 
 <h2>@ViewData["Title"]</h2>
@@ -42,7 +42,7 @@ else
             </div>
             <form asp-action="Delete" method="post">
                 <input type="hidden" name="userName" value="@contact.UserName" />
-                <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                <button type="submit" class="btn btn-danger btn-sm">Видалити</button>
             </form>
         </div>
     }
