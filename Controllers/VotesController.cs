@@ -13,8 +13,6 @@ public class CreateVoteViewModel
     [StringLength(200)]
     public string Title { get; set; }
     public bool IsPrivate { get; set; }
-    [Display(Name = "Analytic Hierarchy Process")]
-    public bool IsAHP { get; set; }
     public string Description { get; set; }
 
     [Display(Name = "Start Date")]
@@ -163,7 +161,6 @@ public class VotesController : Controller
             {
                 Title = model.Title,
                 IsPrivate = model.IsPrivate,
-                IsAHP = model.IsAHP,
                 Description = model.Description,
                 StartDateTime = model.StartDateTime,
                 EndDateTime = model.EndDateTime,

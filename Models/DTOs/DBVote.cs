@@ -12,7 +12,6 @@ namespace CHOICE.Models.DTOs
         public string Title { get; set; }
 
         public bool IsPrivate { get; set; }
-        public bool IsAHP { get; set; }
 
         public string Description { get; set; }
 
