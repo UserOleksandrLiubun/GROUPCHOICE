@@ -9,8 +9,8 @@ using System.Text.Encodings.Web;
 [Route("[controller]/[action]")]
 public class ManageController : Controller
 {
-    private readonly UserManager<ApplicationUser> _userManager;
-    private readonly SignInManager<ApplicationUser> _signInManager;
+    private readonly UserManager<DBApplicationUser> _userManager;
+    private readonly SignInManager<DBApplicationUser> _signInManager;
     private readonly IEmailSender _emailSender;
     private readonly ILogger _logger;
     private readonly UrlEncoder _urlEncoder;
@@ -19,8 +19,8 @@ public class ManageController : Controller
     private const string RecoveryCodesKey = nameof(RecoveryCodesKey);
 
     public ManageController(
-      UserManager<ApplicationUser> userManager,
-      SignInManager<ApplicationUser> signInManager,
+      UserManager<DBApplicationUser> userManager,
+      SignInManager<DBApplicationUser> signInManager,
       IEmailSender emailSender,
       ILogger<ManageController> logger,
       UrlEncoder urlEncoder)
@@ -516,7 +516,7 @@ public class ManageController : Controller
             unformattedKey);
     }
 
-    private async Task LoadSharedKeyAndQrCodeUriAsync(ApplicationUser user, EnableAuthenticatorViewModel model)
+    private async Task LoadSharedKeyAndQrCodeUriAsync(DBApplicationUser user, EnableAuthenticatorViewModel model)
     {
         var unformattedKey = await _userManager.GetAuthenticatorKeyAsync(user);
         if (string.IsNullOrEmpty(unformattedKey))

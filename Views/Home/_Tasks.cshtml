@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<TaskViewModel>
-@inject SignInManager<ApplicationUser> SignInManager
-@inject UserManager<ApplicationUser> UserManager
+@inject SignInManager<DBApplicationUser> SignInManager
+@inject UserManager<DBApplicationUser> UserManager
 @inject ApplicationDbContext _context
 @{
     ViewData["Title"] = "Home Page";

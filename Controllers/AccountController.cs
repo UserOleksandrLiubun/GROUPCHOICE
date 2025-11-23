@@ -9,14 +9,14 @@ using System.Security.Claims;
 [Route("[controller]/[action]")]
 public class AccountController : Controller
 {
-    private readonly UserManager<ApplicationUser> _userManager;
-    private readonly SignInManager<ApplicationUser> _signInManager;
+    private readonly UserManager<DBApplicationUser> _userManager;
+    private readonly SignInManager<DBApplicationUser> _signInManager;
     private readonly IEmailSender _emailSender;
     private readonly ILogger _logger;
     private readonly IMapper _mapper;
     public AccountController(
-        UserManager<ApplicationUser> userManager,
-        SignInManager<ApplicationUser> signInManager,
+        UserManager<DBApplicationUser> userManager,
+        SignInManager<DBApplicationUser> signInManager,
         IEmailSender emailSender,
         ILogger<AccountController> logger,
         IMapper mapper)
@@ -212,7 +212,7 @@ public class AccountController : Controller
         ViewData["ReturnUrl"] = returnUrl;
         if (ModelState.IsValid)
         {
-            var user = new ApplicationUser { UserName = model.UserName, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName };
+            var user = new DBApplicationUser { UserName = model.UserName, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName };
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
@@ -302,7 +302,7 @@ public class AccountController : Controller
             {
                 throw new ApplicationException("Error loading external login information during confirmation.");
             }
-            var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+            var user = new DBApplicationUser { UserName = model.Email, Email = model.Email };
             var result = await _userManager.CreateAsync(user);
             if (result.Succeeded)
             {

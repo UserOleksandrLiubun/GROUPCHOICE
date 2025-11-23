@@ -6,7 +6,7 @@ public class MappingProfile : Profile
     {
         CreateMap<TaskViewModel, DBTask>();
         CreateMap<DBTask, TaskViewModel>();
-        CreateMap<ApplicationUser, RegisterViewModel>();
-        CreateMap<RegisterViewModel, ApplicationUser>();
+        CreateMap<DBApplicationUser, RegisterViewModel>();
+        CreateMap<RegisterViewModel, DBApplicationUser>();
     }
 }

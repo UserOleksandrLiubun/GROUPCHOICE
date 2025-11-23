@@ -20,9 +20,9 @@ public class UserAccessInfo
 public class TaskAccessController : Controller
 {
     private readonly ApplicationDbContext _context;
-    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly UserManager<DBApplicationUser> _userManager;
 
-    public TaskAccessController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+    public TaskAccessController(ApplicationDbContext context, UserManager<DBApplicationUser> userManager)
     {
         _context = context;
         _userManager = userManager;

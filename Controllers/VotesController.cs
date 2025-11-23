@@ -73,9 +73,9 @@ public class EvaluationCriteriaViewModel
 public class VotesController : Controller
 {
     private readonly ApplicationDbContext _context;
-    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly UserManager<DBApplicationUser> _userManager;
 
-    public VotesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+    public VotesController(ApplicationDbContext context, UserManager<DBApplicationUser> userManager)
     {
         _context = context;
         _userManager = userManager;
@@ -93,7 +93,7 @@ public class VotesController : Controller
     {
         var user = await _userManager.GetUserAsync(User);
         var contacts = await _context.Contacts.Where(item => (item.UserId == user.Id || item.ContactUserId == user.Id) && item.IsAccepted == true).ToListAsync();
-        List<ApplicationUser> users = new();
+        List<DBApplicationUser> users = new();
         foreach (var contact in contacts)
         {
             if (contact.UserId == user.Id)
@@ -327,13 +327,10 @@ public class VotesController : Controller
 
         var results = criteria.Select(c => new
         {
-            Criteria = c,
-            AverageImportance = votes.Where(v => v.DBVoteItemSettingsId == c.Id)
-                                   .SafeAverage(v => v.ImportanceValue),
-            AverageValue = votes.Where(v => v.DBVoteItemSettingsId == c.Id)
-                              .SafeAverage(v => v.Value),
-            WeightedScore = votes.Where(v => v.DBVoteItemSettingsId == c.Id)
-                               .SafeAverage(v => v.ImportanceValue * v.Value)
+            Vote = vote,
+            Criteria = criteria,
+            Alternatives = alternatives,
+            Votes = votes
         }).ToList();
 
         ViewBag.VoteTitle = vote.Title;

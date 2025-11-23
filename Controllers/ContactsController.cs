@@ -8,15 +8,15 @@ using System.Threading.Tasks;
 public class UserSearchViewModel
 {
     public string SearchTerm { get; set; }
-    public List<ApplicationUser> Users { get; set; } = new List<ApplicationUser>();
+    public List<DBApplicationUser> Users { get; set; } = new List<DBApplicationUser>();
 }
 [Authorize]
 public class ContactsController : Controller
 {
-    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly UserManager<DBApplicationUser> _userManager;
     private readonly ApplicationDbContext _context;
 
-    public ContactsController(UserManager<ApplicationUser> userManager, ApplicationDbContext context)
+    public ContactsController(UserManager<DBApplicationUser> userManager, ApplicationDbContext context)
     {
         _userManager = userManager;
         _context = context;

@@ -11,13 +11,13 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 public class HomeController : Controller
 {
     private readonly ApplicationDbContext _context;
-    private readonly UserManager<ApplicationUser> _userManager;
-    private readonly SignInManager<ApplicationUser> _signInManager;
+    private readonly UserManager<DBApplicationUser> _userManager;
+    private readonly SignInManager<DBApplicationUser> _signInManager;
     private readonly IMapper _mapper;
     public HomeController(
         ApplicationDbContext context,
-        UserManager<ApplicationUser> userManager,
-        SignInManager<ApplicationUser> signInManager,
+        UserManager<DBApplicationUser> userManager,
+        SignInManager<DBApplicationUser> signInManager,
         IMapper mapper)
     {
         _context = context;
