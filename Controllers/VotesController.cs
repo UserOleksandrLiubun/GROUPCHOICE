@@ -69,6 +69,14 @@ public class EvaluationCriteriaViewModel
     [Range(0, double.MaxValue)]
     public double Value { get; set; }
 }
+public class VoteResultViewModel
+{
+    public string Title { get; set; }
+    public DBVote DBVote { get; set; }
+    public List<DBVoteItemSettings> DBVoteItemSettings { get; set; }
+    public List<DBVoteItem> DBVoteItem { get; set; }
+    public List<DBVoteAlternative> DBVoteAlternative { get; set; }
+}
 [Authorize]
 public class VotesController : Controller
 {
@@ -313,7 +321,7 @@ public class VotesController : Controller
         var vote = _context.DBVotes.FirstOrDefault((item) => item.Id == id);
         if (vote == null) return NotFound();
 
-        var criteria = _context.DBVoteItemSettings
+        var dBVoteItemSettings = _context.DBVoteItemSettings
             .Where(s => s.DBVoteId == vote.Id)
             .ToList();
 
@@ -325,17 +333,16 @@ public class VotesController : Controller
             .Where(v => v.DBVoteId == vote.Id)
             .ToList();
 
-        var results = criteria.Select(c => new
+        var result = new VoteResultViewModel()
         {
-            Vote = vote,
-            Criteria = criteria,
-            Alternatives = alternatives,
-            Votes = votes
-        }).ToList();
+            Title = vote.Title,
+            DBVote = vote,
+            DBVoteItemSettings = dBVoteItemSettings,
+            DBVoteItem = votes,
+            DBVoteAlternative = alternatives
+        };
 
-        ViewBag.VoteTitle = vote.Title;
-        ViewBag.TotalVotes = votes.Select(v => v.UserId).Distinct().Count();
-        return View(results);
+        return View(result);
     }
 
     // POST: Contacts/Delete
