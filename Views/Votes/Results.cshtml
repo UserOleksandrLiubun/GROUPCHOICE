@@ -40,7 +40,6 @@
                 }
             </div>
         </div>
-
         @if (Model.DBVoteAlternative.Any())
         {
             <div class="card mb-4">
@@ -53,7 +52,7 @@
                             <thead>
                                 <tr>
                                     <th>Alternative</th>
-                                    <th>Average Score</th>
+                                    <th>Weighted Average Score</th>
                                     <th>Vote Count</th>
                                 </tr>
                             </thead>
@@ -61,21 +60,43 @@
                                 @foreach (var alternative in Model.DBVoteAlternative)
                                 {
                                     var alternativeVotes = Model.DBVoteItem.Where(v => v.DBVoteAlternativeId == alternative.Id).ToList();
-                                    var averageScore = alternativeVotes.Any() ? alternativeVotes.Average(v => v.Value) : 0;
+                                    var distinctUsers = alternativeVotes.Select(v => v.UserId).Distinct().Count();
+
+                                    // Calculate weighted average score considering importance
+                                    double weightedSum = 0;
+                                    double totalWeight = 0;
+
+                                    foreach (var vote in alternativeVotes)
+                                    {
+                                        // Get the criterion settings for this vote
+                                        var criterionSettings = Model.DBVoteItemSettings.FirstOrDefault(s => s.Id == vote.DBVoteItemSettingsId);
+                                        if (criterionSettings != null)
+                                        {
+                                            // Use the importance value from settings (default) or from user if overridden
+                                            double importance = vote.ImportanceValue > 0 ? vote.ImportanceValue : criterionSettings.ImportanceValue;
+                                            double normalizedImportance = importance / 100.0; // Convert to 0-1 scale
+
+                                            weightedSum += vote.Value * normalizedImportance;
+                                            totalWeight += normalizedImportance;
+                                        }
+                                    }
+
+                                    var weightedAverageScore = totalWeight > 0 ? weightedSum / totalWeight : 0;
+
                                     <tr>
                                         <td>@alternative.Title</td>
                                         <td>
                                             <div class="progress">
                                                 <div class="progress-bar" role="progressbar"
-                                                     style="width: @(averageScore * 10)%"
-                                                     aria-valuenow="@averageScore"
+                                                     style="width: @(weightedAverageScore * 10)%"
+                                                     aria-valuenow="@weightedAverageScore"
                                                      aria-valuemin="0"
                                                      aria-valuemax="10">
-                                                    @averageScore.ToString("F2")
+                                                    @weightedAverageScore.ToString("F2")
                                                 </div>
                                             </div>
                                         </td>
-                                        <td>@alternativeVotes.Select(v => v.UserId).Distinct().Count()</td>
+                                        <td>@distinctUsers</td>
                                     </tr>
                                 }
                             </tbody>
@@ -207,8 +228,6 @@
                             <strong>Unique Participants:</strong> @uniqueUsers
                         </div>
                     </div>
-
-
                         <div class="mt-3">
                         @if (votesPerUser.Any())
                         {
