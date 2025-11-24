@@ -78,6 +78,7 @@ public class EvaluationCriteriaViewModel
     public double MaxValue { get; set; }
     public double StepValue { get; set; }
     [Range(0, double.MaxValue)]
+    [Display(Name = "Значення")]
     public double Value { get; set; }
 }
 public class VoteResultViewModel

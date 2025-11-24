@@ -16,17 +16,17 @@ namespace CHOICE.Models.DTOs
 
         public string Description { get; set; }
 
-        [Display(Name = "Importance")]
+        [Display(Name = "Важливість")]
         [Range(1, 100)]
         public double ImportanceValue { get; set; } = 100;
 
-        [Display(Name = "Min Value")]
+        [Display(Name = "Мінімальне значення")]
         public double MinValue { get; set; } = 0;
 
-        [Display(Name = "Step Value")]
+        [Display(Name = "Крок")]
         public double StepValue { get; set; } = 0;
 
-        [Display(Name = "Max Value")]
+        [Display(Name = "Максимальне значення")]
         public double MaxValue { get; set; } = 10;
     }
 }

@@ -21,7 +21,7 @@
         var isNew = Model.Alternatives.Count() > 0 && alternativeId != Model.Criteria[i].DBVoteAlternativeId && Model.Criteria[i].DBVoteAlternativeId != null;
         alternativeId = isNew ? Model.Criteria[i].DBVoteAlternativeId : alternativeId;
         var alternative = isNew ? Model.Alternatives.Where((item) => item.Id == Model.Criteria[i].DBVoteAlternativeId).First() : null;
-        <h3>Альтернатива: @alternative?.Title</h3>
+        <h3> @(isNew ?  ("Альтернатива: " + @alternative?.Title) : "") </h3>
         <div class="criteria-item border p-3 mb-3">
             <input type="hidden" asp-for="Criteria[i].SettingsId" />
             <input type="hidden" asp-for="Criteria[i].MinValue" />
@@ -34,11 +34,11 @@
                 <div class="col-md-12">
                     <h5>@Model.Criteria[i].Title</h5>
                     <div class="form-group">
-                        <label asp-for="Criteria[i].Value" class="control-label">Value</label>
+                        <label asp-for="Criteria[i].Value" class="control-label"></label>
                         <input type="number" asp-for="Criteria[i].Value" class="form-control"
                                min="@Model.Criteria[i].MinValue" max="@Model.Criteria[i].MaxValue" step="@Model.Criteria[i].StepValue" />
                         <small class="form-text text-muted">
-                            Value (@Model.Criteria[i].MinValue - @Model.Criteria[i].MaxValue). @Model.Criteria[i].Description
+                            Значення повинно міститьсь в діапазоні від @Model.Criteria[i].MinValue до @Model.Criteria[i].MaxValue. @Model.Criteria[i].Description
                         </small>
                         <span asp-validation-for="Criteria[i].Value" class="text-danger"></span>
                     </div>

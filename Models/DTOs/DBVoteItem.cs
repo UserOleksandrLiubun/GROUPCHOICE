@@ -19,7 +19,7 @@ namespace CHOICE.Models.DTOs
         [Range(0, 100)]
         public double ImportanceValue { get; set; }
 
-        [Display(Name = "Value")]
+        [Display(Name = "Значення")]
         public double Value { get; set; }
 
         public string UserId { get; set; }
