@@ -283,6 +283,191 @@
 
                 </div>
             </div>
+            <!-- All Votes Table -->
+<div class="card mb-4">
+    <div class="card-header">
+        <h4>Усі голоси</h4>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Користувач</th>
+                        <th>Альтернатива</th>
+                        <th>Критерій</th>
+                        <th>Оцінка</th>
+                        <th>Важливість</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var vote in Model.DBVoteItem.OrderBy(v => v.DBVoteAlternativeId).ThenBy(v => v.DBVoteItemSettingsId))
+                    {
+                        var user = await UserManager.FindByIdAsync(vote.UserId);
+                        var alternative = Model.DBVoteAlternative.FirstOrDefault(a => a.Id == vote.DBVoteAlternativeId);
+                        var itemSetting = Model.DBVoteItemSettings.FirstOrDefault(s => s.Id == vote.DBVoteItemSettingsId);
+                        
+                        <tr>
+                            <td>
+                                @if (user != null)
+                                {
+                                    <text>@user.FirstName @user.LastName (@user.UserName)</text>
+                                }
+                                else
+                                {
+                                    <text>Невідомий користувач</text>
+                                }
+                            </td>
+                            <td>@(alternative?.Title ?? "Невідома альтернатива")</td>
+                            <td>@(itemSetting?.Title ?? "Невідомий критерій")</td>
+                            <td>
+                                <span class="badge bg-primary">@vote.Value.ToString("F1")</span>
+                            </td>
+                            <td>
+                                @{
+                                    var importanceValue = vote.ImportanceValue > 0 ? vote.ImportanceValue : itemSetting?.ImportanceValue ?? 100;
+                                }
+                                <span class="badge bg-info">@importanceValue</span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Summary statistics -->
+        <div class="row mt-3">
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">@Model.DBVoteItem.Count()</h5>
+                        <p class="card-text">Всього голосів</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">@Model.DBVoteItem.Select(v => v.UserId).Distinct().Count()</h5>
+                        <p class="card-text">Унікальних користувачів</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">@Model.DBVoteAlternative.Count()</h5>
+                        <p class="card-text">Альтернатив</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">@Model.DBVoteItemSettings.Count()</h5>
+                        <p class="card-text">Критеріїв</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Alternative Votes Summary -->
+<div class="card mb-4">
+    <div class="card-header">
+        <h4>Підсумок голосів за альтернативами</h4>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Альтернатива</th>
+                        <th>Кількість голосів</th>
+                        <th>Середній бал</th>
+                        <th>Унікальні користувачі</th>
+                        <th>Деталі</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var alternative in Model.DBVoteAlternative)
+                    {
+                        var alternativeVotes = Model.DBVoteItem.Where(v => v.DBVoteAlternativeId == alternative.Id).ToList();
+                        var distinctUsers = alternativeVotes.Select(v => v.UserId).Distinct().Count();
+                        var averageScore = alternativeVotes.Any() ? alternativeVotes.Average(v => v.Value) : 0;
+                        
+                        <tr>
+                            <td><strong>@alternative.Title</strong></td>
+                            <td>@alternativeVotes.Count</td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="progress flex-grow-1 me-2" style="height: 10px;">
+                                        <div class="progress-bar bg-success" 
+                                             style="width: @(averageScore * 10)%"
+                                             title="@averageScore.ToString("F2")">
+                                        </div>
+                                    </div>
+                                    <span>@averageScore.ToString("F2")</span>
+                                </div>
+                            </td>
+                            <td>@distinctUsers</td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary" 
+                                        type="button" 
+                                        data-bs-toggle="collapse" 
+                                        data-bs-target="#collapseAlternative@(alternative.Id)" 
+                                        aria-expanded="false" 
+                                        aria-controls="collapseAlternative@(alternative.Id)">
+                                    Показати деталі
+                                </button>
+                            </td>
+                        </tr>
+                        <tr class="collapse-row">
+                            <td colspan="5" class="p-0">
+                                <div class="collapse" id="collapseAlternative@(alternative.Id)">
+                                    <div class="p-3 bg-light">
+                                        <h6>Детальні результати для: @alternative.Title</h6>
+                                        <div class="table-responsive">
+                                            <table class="table table-sm">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Критерій</th>
+                                                        <th>Кількість голосів</th>
+                                                        <th>Середній бал</th>
+                                                        <th>Мін.</th>
+                                                        <th>Макс.</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var itemSetting in Model.DBVoteItemSettings)
+                                                    {
+                                                        var criterionVotes = alternativeVotes.Where(v => v.DBVoteItemSettingsId == itemSetting.Id).ToList();
+                                                        var criterionAvg = criterionVotes.Any() ? criterionVotes.Average(v => v.Value) : 0;
+                                                        var criterionMin = criterionVotes.Any() ? criterionVotes.Min(v => v.Value) : 0;
+                                                        var criterionMax = criterionVotes.Any() ? criterionVotes.Max(v => v.Value) : 0;
+                                                        
+                                                        <tr>
+                                                            <td>@itemSetting.Title</td>
+                                                            <td>@criterionVotes.Count</td>
+                                                            <td>@criterionAvg.ToString("F2")</td>
+                                                            <td>@criterionMin.ToString("F1")</td>
+                                                            <td>@criterionMax.ToString("F1")</td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
         }
     </div>
 </div>
