@@ -88,7 +88,7 @@
                                         <td>
                                             <div class="progress">
                                                 <div class="progress-bar" role="progressbar"
-                                                     style="width: @(weightedAverageScore * 10)%"
+                                                     style="width: @Math.Ceiling((weightedAverageScore * 10))%"
                                                      aria-valuenow="@weightedAverageScore"
                                                      aria-valuemin="0"
                                                      aria-valuemax="10">
