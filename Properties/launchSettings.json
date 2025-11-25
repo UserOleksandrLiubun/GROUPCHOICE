@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "CHOICE": {
+    "SOLUTION": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
