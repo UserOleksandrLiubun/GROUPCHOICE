@@ -59,6 +59,8 @@ public class VoteEvaluationViewModel
     public bool IsPrivate { get; set; }
     public List<DBVoteAlternative> Alternatives { get; set; } = new();
     public List<EvaluationCriteriaViewModel> Criteria { get; set; } = new();
+    [Display(Name = "Позиції альтернатив")]
+    public Dictionary<int, int> AlternativePositions { get; set; } = new Dictionary<int, int>();
 }
 
 public class EvaluationCriteriaViewModel
