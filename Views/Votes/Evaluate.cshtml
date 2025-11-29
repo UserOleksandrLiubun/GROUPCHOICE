@@ -18,7 +18,6 @@
     }
 
     .alternative-section {
-        cursor: move;
         transition: all 0.3s ease;
         user-select: none;
         margin-bottom: 2rem;
@@ -43,6 +42,11 @@
         padding: 1rem;
         border-radius: 6px 6px 0 0;
         margin-bottom: 0;
+        cursor: move; /* Only the header is draggable */
+    }
+
+    .alternative-criteria-container {
+        cursor: default; /* Criteria container is not draggable */
     }
 
     .criteria-item {
@@ -64,6 +68,10 @@
         cursor: move;
         margin-right: 10px;
         font-size: 1.2em;
+    }
+
+    .alternative-header.dragging {
+        background-color: #d1ecf1;
     }
 </style>
 
@@ -97,7 +105,7 @@
                         <span class="alternative-drag-handle">↕</span>
                         <h3 class="mb-0">Альтернатива: @alternative?.Title</h3>
                     </div>
-                    <span class="badge badge-info">Перетягніть для зміни порядку альтернатив</span>
+                    <span class="text-dark badge badge-info">Перетягніть заголовок для зміни порядку альтернатив</span>
                 </div>
 
                 <div class="alternative-criteria-container p-3">
@@ -154,35 +162,54 @@
         let draggedItem = null;
         let isDraggingAlternative = false;
 
-        // Alternative drag and drop functionality
-        document.querySelectorAll('.alternative-section').forEach(section => {
-            section.setAttribute('draggable', 'true');
+        // Alternative drag and drop functionality - ONLY on header
+        document.querySelectorAll('.alternative-header').forEach(header => {
+            header.setAttribute('draggable', 'true');
 
-            section.addEventListener('dragstart', function(e) {
-                draggedItem = this;
+            header.addEventListener('dragstart', function(e) {
+                draggedItem = this.closest('.alternative-section');
                 isDraggingAlternative = true;
                 setTimeout(() => {
+                    draggedItem.classList.add('dragging');
                     this.classList.add('dragging');
                 }, 0);
                 e.dataTransfer.effectAllowed = 'move';
+
+                // Set drag image to the entire alternative section for better visual feedback
+                e.dataTransfer.setDragImage(draggedItem, 20, 20);
             });
 
-            section.addEventListener('dragend', function() {
+            header.addEventListener('dragend', function() {
+                if (draggedItem) {
+                    draggedItem.classList.remove('dragging');
+                }
                 this.classList.remove('dragging');
                 isDraggingAlternative = false;
                 updateFormIndices();
             });
 
+            header.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'move';
+            });
+
+            header.addEventListener('dragenter', function(e) {
+                e.preventDefault();
+            });
+        });
+
+        // Alternative section drop targets
+        document.querySelectorAll('.alternative-section').forEach(section => {
             section.addEventListener('dragover', function(e) {
+                if (!isDraggingAlternative) return;
                 e.preventDefault();
                 e.dataTransfer.dropEffect = 'move';
             });
 
             section.addEventListener('dragenter', function(e) {
+                if (!isDraggingAlternative || this === draggedItem) return;
                 e.preventDefault();
-                if (this !== draggedItem && isDraggingAlternative) {
-                    this.classList.add('drag-over');
-                }
+                this.classList.add('drag-over');
             });
 
             section.addEventListener('dragleave', function() {
@@ -212,7 +239,10 @@
             item.setAttribute('draggable', 'true');
 
             item.addEventListener('dragstart', function(e) {
-                if (isDraggingAlternative) return;
+                if (isDraggingAlternative) {
+                    e.preventDefault();
+                    return;
+                }
 
                 draggedItem = this;
                 setTimeout(() => {
@@ -308,5 +338,12 @@
 
             console.log('Form indices updated');
         }
+
+        // Prevent text selection while dragging for better UX
+        document.addEventListener('dragstart', function(e) {
+            if (e.target.closest('.alternative-header') || e.target.closest('.criteria-item')) {
+                e.dataTransfer.effectAllowed = 'move';
+            }
+        });
     });
 </script>
