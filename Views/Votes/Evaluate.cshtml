@@ -50,7 +50,7 @@
         var alternative = isNew ? Model.Alternatives.Where((item) => item.Id == Model.Criteria[i].DBVoteAlternativeId).First() : null;
         @if (isNew)
         {
-            <h4>Альтернатива: @alternative?.Title </h4>
+            <h4 class="border border-bottom-0 rounded-top p-2 mb-0 bg-light">Альтернатива: @alternative?.Title </h4>
         }
         <div class="criteria-item border-bottom border-start border-end @(isNew ? "border-top" : "") p-3">
             <input type="hidden" asp-for="Criteria[i].SettingsId" />
