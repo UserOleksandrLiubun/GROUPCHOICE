@@ -51,7 +51,7 @@
         @if (isNew) {
             <h4>Альтернатива: @alternative?.Title </h4>
         }
-        <div class="criteria-item border p-3 mb-3">
+        <div class="criteria-item border p-3">
             <input type="hidden" asp-for="Criteria[i].SettingsId" />
             <input type="hidden" asp-for="Criteria[i].MinValue" />
             <input type="hidden" asp-for="Criteria[i].MaxValue" />
@@ -113,6 +113,7 @@
             </div>
         </div>
     }
+    <br/>
     <div class="form-group">
         <input type="submit" value="Оцінити" class="btn btn-primary" />
         <a asp-action="Index" class="btn btn-secondary">Скасувати</a>
