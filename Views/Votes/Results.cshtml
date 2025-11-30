@@ -298,6 +298,7 @@
                         <th>Критерій</th>
                         <th>Оцінка</th>
                         <th>Важливість</th>
+                        <th>Приорітет альтернативи</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -328,6 +329,9 @@
                                     var importanceValue = itemSetting.ImportanceValue != null ? itemSetting.ImportanceValue.ToString() : "-";
                                 }
                                 <span class="badge bg-info">@importanceValue</span>
+                            </td>
+                            <td>
+                                @(vote?.AlternativePriority != null ? vote?.AlternativePriority : "")
                             </td>
                         </tr>
                     }
