@@ -147,10 +147,6 @@ public class VotesController : Controller
             Alternatives = new() {
                  ""
             },
-            Criteria = new List<VoteCriteriaViewModel>
-            {
-                new VoteCriteriaViewModel()
-            },
             Contacts = await GetContacts()
         };
         return View(model);
