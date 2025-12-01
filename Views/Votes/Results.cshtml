@@ -43,6 +43,56 @@
         @if (Model.DBVoteAlternative.Any())
         {
             <div class="card mb-4">
+    <div class="card-header">
+        <h4>Ранжування альтернатив за пріоритетом</h4>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Місце</th>
+                        <th>Альтернатива</th>
+                        <th>Кількість голосів</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        var priorityRankings = Model.DBVoteItem
+                            .Where(v => v.AlternativePriority.HasValue)
+                            .GroupBy(v => v.DBVoteAlternativeId)
+                            .Select(g => new
+                            {
+                                AlternativeId = g.Key,
+                                Alternative = Model.DBVoteAlternative.FirstOrDefault(a => a.Id == g.Key),
+                                AveragePriority = g.Average(v => v.AlternativePriority.Value),
+                                VoteCount = g.Count(),
+                                MinPriority = g.Min(v => v.AlternativePriority.Value),
+                                MaxPriority = g.Max(v => v.AlternativePriority.Value)
+                            })
+                            .Where(a => a.Alternative != null)
+                            .OrderBy(a => a.AveragePriority)
+                            .ToList();
+                        
+                        int rank = 1;
+                        foreach (var item in priorityRankings)
+                        {
+                            <tr>
+                                <td>@rank</td>
+                                <td>@item.Alternative.Title</td>
+                                <td>                                    
+                                    @item.VoteCount
+                                </td>
+                            </tr>
+                            rank++;
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+            <div class="card mb-4">
                 <div class="card-header">
                     <h4>Огляд альтернатив</h4>
                 </div>
@@ -107,6 +157,8 @@
         }
 
         <!-- Detailed Results by Vote Item -->
+        @if(Model.DBVoteItemSettings.Count() > 0)
+        {
         <div class="card mb-4">
             <div class="card-header">
                 <h4>Детальні результати за критеріями</h4>
@@ -208,7 +260,7 @@
                 }
             </div>
         </div>
-
+        }
         <!-- User Participation Summary -->
         @if (!Model.IsPrivate)
         {
