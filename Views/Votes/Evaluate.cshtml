@@ -18,6 +18,8 @@
     <input type="hidden" asp-for="IsPrivate" />
     <input type="hidden" asp-for="VoteTitle" />
 
+    @if (Model.Criteria.Count() !> 0) 
+    {
     <!-- Drag & Drop Block for Alternative Positioning -->
     <div class="alternative-ordering mb-3">
         <h4>Впорядкування альтернатив</h4>
@@ -42,7 +44,7 @@
             Позиція 1 - найвищий пріоритет, @Model.Alternatives.Count() - найнижчий
         </small>
     </div>
-
+    }
     @for (int i = 0; i < Model.Criteria.Count; i++)
     {
         var isNew = Model.Alternatives.Count() > 0 && alternativeId != Model.Criteria[i].DBVoteAlternativeId && Model.Criteria[i].DBVoteAlternativeId != null;
