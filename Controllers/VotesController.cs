@@ -364,6 +364,11 @@ public class VotesController : Controller
             .Where(v => v.DBVoteId == vote.Id)
             .ToList();
 
+        if (dBVoteItemSettings.Count() > 0)
+        {
+
+        }
+
         var result = new VoteResultViewModel()
         {
             Title = vote.Title,
