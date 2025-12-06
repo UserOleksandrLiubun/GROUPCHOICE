@@ -279,9 +279,54 @@ public class VotesController : Controller
             .Where(v => v.DBVoteId == vote.Id)
             .ToList();
 
-        if (dBVoteItemSettings.Count() > 0)
+        // If there are no settings, convert priorities into normalized votes
+        if (dBVoteItemSettings.Count == 0 && alternatives.Count > 0)
         {
+            // Create a dummy setting to display the results
+            dBVoteItemSettings = new List<DBVoteItemSettings>
+            {
+                new DBVoteItemSettings
+                {
+                    Id = -1, // Temporary ID
+                    DBVoteId = vote.Id,
+                    Title = "Priority Ranking",
+                    Description = "Results converted from priority rankings",
+                    ImportanceValue = 100,
+                    MinValue = 1,
+                    StepValue = 1,
+                    MaxValue = alternatives.Count
+                }
+            };
 
+            // Group votes by user
+            var userVotes = votes.GroupBy(v => v.UserId);
+
+            foreach (var userGroup in userVotes)
+            {
+                // Get user's votes for alternatives
+                var userAlternativeVotes = userGroup
+                    .OrderBy(v => v.AlternativePriority)
+                    .ToList();
+
+                if (userAlternativeVotes.Any())
+                {
+                    // Calculate normalized values based on priority
+                    // Higher priority (lower number) gets higher value
+                    int totalAlternatives = userAlternativeVotes.Count;
+
+                    for (int i = 0; i < totalAlternatives; i++)
+                    {
+                        var voteItem = userAlternativeVotes[i];
+                        // Normalize: highest priority (1) gets 10, lowest gets 1
+                        // Or use a different formula based on your needs
+                        double normalizedValue = totalAlternatives - i; // Simple linear scale
+                        voteItem.Value = normalizedValue;
+                    }
+
+                    // Update the context
+                    _context.UpdateRange(userAlternativeVotes);
+                }
+            }
         }
 
         var result = new VoteResultViewModel()
