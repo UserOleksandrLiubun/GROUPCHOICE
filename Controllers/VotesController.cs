@@ -327,8 +327,11 @@ public class VotesController : Controller
                     _context.UpdateRange(userAlternativeVotes);
                 }
             }
+            for (int i = 0; i < votes.Count(); ++i)
+            {
+                votes[i].DBVoteItemSettingsId = dBVoteItemSettings[0].Id;
+            }
         }
-
         var result = new VoteResultViewModel()
         {
             Title = vote.Title,
