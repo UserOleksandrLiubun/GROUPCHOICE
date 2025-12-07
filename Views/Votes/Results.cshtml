@@ -40,122 +40,68 @@
                 }
             </div>
         </div>
-        @if (Model.DBVoteAlternative.Any())
-        {
-            @if(Model.DBVoteItemSettings.Count() == 0){
-                <div class="card mb-4">
-    <div class="card-header">
-        <h4>Ранжування альтернатив за пріоритетом</h4>
-    </div>
-    <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Місце</th>
-                        <th>Альтернатива</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @{
-                        var priorityRankings = Model.DBVoteItem
-                            .Where(v => v.AlternativePriority.HasValue)
-                            .GroupBy(v => v.DBVoteAlternativeId)
-                            .Select(g => new
-                            {
-                                AlternativeId = g.Key,
-                                Alternative = Model.DBVoteAlternative.FirstOrDefault(a => a.Id == g.Key),
-                                AveragePriority = g.Average(v => v.AlternativePriority.Value),
-                                VoteCount = g.Count(),
-                                MinPriority = g.Min(v => v.AlternativePriority.Value),
-                                MaxPriority = g.Max(v => v.AlternativePriority.Value)
-                            })
-                            .Where(a => a.Alternative != null)
-                            .OrderBy(a => a.AveragePriority)
-                            .ToList();
-                        
-                        int rank = 1;
-                        foreach (var item in priorityRankings)
-                        {
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4>Огляд альтернатив</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
                             <tr>
-                                <td>@rank</td>
-                                <td>@item.Alternative.Title</td>
+                                <th>Альтернатива</th>
+                                <th>Середньозважений бал</th>
+                                <th>Кількість голосів</th>
                             </tr>
-                            rank++;
-                        }
-                    }
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-            }
-            else
-            {
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h4>Огляд альтернатив</h4>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Альтернатива</th>
-                                    <th>Середньозважений бал</th>
-                                    <th>Кількість голосів</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var alternative in Model.DBVoteAlternative)
+                        </thead>
+                        <tbody>
+                            @foreach (var alternative in Model.DBVoteAlternative)
+                            {
+                                var alternativeVotes = Model.DBVoteItem.Where(v => v.DBVoteAlternativeId == alternative.Id).ToList();
+                                var distinctUsers = alternativeVotes.Select(v => v.UserId).Distinct().Count();
+
+                                // Calculate weighted average score considering importance
+                                double weightedSum = 0;
+                                double totalWeight = 0;
+
+                                foreach (var vote in alternativeVotes)
                                 {
-                                    var alternativeVotes = Model.DBVoteItem.Where(v => v.DBVoteAlternativeId == alternative.Id).ToList();
-                                    var distinctUsers = alternativeVotes.Select(v => v.UserId).Distinct().Count();
-
-                                    // Calculate weighted average score considering importance
-                                    double weightedSum = 0;
-                                    double totalWeight = 0;
-
-                                    foreach (var vote in alternativeVotes)
+                                    // Get the criterion settings for this vote
+                                    var criterionSettings = Model.DBVoteItemSettings.FirstOrDefault(s => s.Id == vote.DBVoteItemSettingsId);
+                                    if (criterionSettings != null)
                                     {
-                                        // Get the criterion settings for this vote
-                                        var criterionSettings = Model.DBVoteItemSettings.FirstOrDefault(s => s.Id == vote.DBVoteItemSettingsId);
-                                        if (criterionSettings != null)
-                                        {
-                                            // Use the importance value from settings (default) or from user if overridden
-                                            double importance = criterionSettings.ImportanceValue.GetValueOrDefault(100);
-                                            double normalizedImportance = importance / 100.0; // Convert to 0-1 scale
+                                        // Use the importance value from settings (default) or from user if overridden
+                                        double importance = criterionSettings.ImportanceValue.GetValueOrDefault(100);
+                                        double normalizedImportance = importance / 100.0; // Convert to 0-1 scale
 
-                                            weightedSum += vote.Value.GetValueOrDefault() * normalizedImportance;
-                                            totalWeight += normalizedImportance;
-                                        }
+                                        weightedSum += vote.Value.GetValueOrDefault() * normalizedImportance;
+                                        totalWeight += normalizedImportance;
                                     }
-
-                                    var weightedAverageScore = totalWeight > 0 ? weightedSum / totalWeight : 0;
-
-                                    <tr>
-                                        <td>@alternative.Title</td>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar" role="progressbar"
-                                                     style="width: @Math.Ceiling((weightedAverageScore * 10))%"
-                                                     aria-valuenow="@weightedAverageScore"
-                                                     aria-valuemin="0"
-                                                     aria-valuemax="10">
-                                                    @weightedAverageScore.ToString("F2")
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>@distinctUsers</td>
-                                    </tr>
                                 }
-                            </tbody>
-                        </table>
-                    </div>
+
+                                var weightedAverageScore = totalWeight > 0 ? weightedSum / totalWeight : 0;
+
+                                <tr>
+                                    <td>@alternative.Title</td>
+                                    <td>
+                                        <div class="progress">
+                                            <div class="progress-bar" role="progressbar"
+                                                 style="width: @Math.Ceiling((weightedAverageScore * 10))%"
+                                                 aria-valuenow="@weightedAverageScore"
+                                                 aria-valuemin="0"
+                                                 aria-valuemax="10">
+                                                @weightedAverageScore.ToString("F2")
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>@distinctUsers</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
                 </div>
             </div>
-            }
-        }
+        </div>
 
         <!-- Detailed Results by Vote Item -->
         @if(Model.DBVoteItemSettings.Count() > 0)
