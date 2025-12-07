@@ -282,22 +282,6 @@ public class VotesController : Controller
         // If there are no settings, convert priorities into normalized votes
         if (dBVoteItemSettings.Count == 0 && alternatives.Count > 0)
         {
-            // Create a dummy setting to display the results
-            dBVoteItemSettings = new List<DBVoteItemSettings>
-            {
-                new DBVoteItemSettings
-                {
-                    Id = -1, // Temporary ID
-                    DBVoteId = vote.Id,
-                    Title = "Priority Ranking",
-                    Description = "Results converted from priority rankings",
-                    ImportanceValue = 100,
-                    MinValue = 1,
-                    StepValue = 1,
-                    MaxValue = alternatives.Count
-                }
-            };
-
             // Group votes by user
             var userVotes = votes.GroupBy(v => v.UserId);
 
@@ -327,9 +311,24 @@ public class VotesController : Controller
                     _context.UpdateRange(userAlternativeVotes);
                 }
             }
+
+            dBVoteItemSettings.Add(new()
+            {
+                Id = vote.Id,
+                DBVoteId = vote.Id,
+                Title = "Приорітет",
+                Description = "",
+                ImportanceValue = null,
+                MinValue = 1,
+                StepValue = 1,
+                MaxValue = alternatives.Count
+            });
+
+            // Group votes by alternatives
+            userVotes = votes.GroupBy(v => v.UserId);
             for (int i = 0; i < votes.Count(); ++i)
             {
-                votes[i].DBVoteItemSettingsId = dBVoteItemSettings[0].Id;
+                votes[i].DBVoteItemSettingsId = votes[i].DBVoteAlternativeId;
             }
         }
         var result = new VoteResultViewModel()
