@@ -4,7 +4,7 @@
     ViewData["Title"] = "Results: " + ViewBag.VoteTitle;
     var totalVotes = Model.DBVoteItem.Count();
     var uniqueUsers = Model.DBVoteItem.Select(v => v.UserId).Distinct().Count();
-    var listImportance = new List<(int, double, string)>();
+    var listImportance = new List<(int, double, string, double, double, int)>();
 }
 
 <h2>Результати: @Model.Title</h2>
@@ -85,21 +85,27 @@
 
                                 // Calculate percentage for progress bar
                                 var percentageWidth = Math.Ceiling(maxScore > 0 ? (weightedAverageScore / maxScore) * 100 : 0);
-                                listImportance.Add((alternative.Id, percentageWidth, alternative.Title));
+                                listImportance.Add((alternative.Id, percentageWidth, alternative.Title, maxScore, weightedAverageScore, distinctUsers));
+                            }
+                            @{
+                                listImportance = listImportance.OrderByDescending(item => item.Item2).ToList();
+                            }
+                            @foreach (var item in listImportance)
+                            {
                                 <tr>
-                                    <td>@alternative.Title</td>
+                                    <td>@item.Item3</td>
                                     <td>
                                         <div class="progress">
                                             <div class="progress-bar" role="progressbar"
-                                                 style="width: @percentageWidth%"
-                                                 aria-valuenow="@weightedAverageScore"
+                                                 style="width: @item.Item2%"
+                                                 aria-valuenow="@item.Item5"
                                                  aria-valuemin="0"
-                                                 aria-valuemax="@maxScore">
-                                                @weightedAverageScore.ToString("F2")
+                                                 aria-valuemax="@item.Item4">
+                                                @item.Item5.ToString("F2")
                                             </div>
                                         </div>
                                     </td>
-                                    <td>@distinctUsers</td>
+                                    <td>@item.Item6</td>
                                 </tr>
                             }
                         </tbody>
