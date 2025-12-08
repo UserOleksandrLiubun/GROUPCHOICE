@@ -417,7 +417,7 @@
                                 <div class="d-flex align-items-center">
                                     <div class="progress flex-grow-1 me-2" style="height: 10px;">
                                         <div class="progress-bar bg-success" 
-                                             style="width: @Math.Ceiling((averageScore.GetValueOrDefault() * 10))%"
+                                             style="width: @(listImportance.First(item => item.Item1 == alternative.Id).Item2)%"
                                              title="@averageScore.GetValueOrDefault().ToString("F2")">
                                         </div>
                                     </div>
