@@ -84,14 +84,14 @@
                                 var weightedAverageScore = totalWeight > 0 ? weightedSum / totalWeight : 0;
 
                                 // Calculate percentage for progress bar
-                                var percentageWidth = maxScore > 0 ? (weightedAverageScore / maxScore) * 100 : 0;
+                                var percentageWidth = Math.Ceiling(maxScore > 0 ? (weightedAverageScore / maxScore) * 100 : 0);
                                 listImportance.Add((alternative.Id, percentageWidth));
                                 <tr>
                                     <td>@alternative.Title</td>
                                     <td>
                                         <div class="progress">
                                             <div class="progress-bar" role="progressbar"
-                                                 style="width: @Math.Ceiling(percentageWidth)%"
+                                                 style="width: @percentageWidth%"
                                                  aria-valuenow="@weightedAverageScore"
                                                  aria-valuemin="0"
                                                  aria-valuemax="@maxScore">
