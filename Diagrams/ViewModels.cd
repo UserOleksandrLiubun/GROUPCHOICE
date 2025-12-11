@@ -25,7 +25,7 @@
     <Position X="5" Y="11.5" Width="4" />
     <TypeIdentifier>
       <HashCode>AAAAACAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAA=</HashCode>
-      <FileName>Controllers\ContactsController.cs</FileName>
+      <FileName>Models\ViewModels\UserSearchViewModel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ContactViewModel">
@@ -46,42 +46,49 @@
     <Position X="2" Y="6.25" Width="3.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAEAABAAAIAAAAAgAAAAEAAAAAABAAAA=</HashCode>
-      <FileName>Controllers\TaskAccessController.cs</FileName>
+      <FileName>Models\ViewModels\TaskAccessViewModel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CreateVoteViewModel">
     <Position X="6.25" Y="6.25" Width="3.25" />
     <TypeIdentifier>
       <HashCode>BAAIAEABQAAgEEAAAAAAAAAAEAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Controllers\VotesController.cs</FileName>
+      <FileName>Models\ViewModels\CreateVoteViewModel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="VoteCriteriaViewModel">
     <Position X="5.25" Y="9" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAgAEgAAAAAAAAIABAAAAAAAAAgAAAAAAA=</HashCode>
-      <FileName>Controllers\VotesController.cs</FileName>
+      <FileName>Models\ViewModels\VoteCriteriaViewModel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="VoteEvaluationViewModel">
     <Position X="8" Y="9" Width="3.75" />
     <TypeIdentifier>
       <HashCode>AAAAAEABQAAgAAAAAAAEABAAAAAgAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Controllers\VotesController.cs</FileName>
+      <FileName>Models\ViewModels\VoteEvaluationViewModel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="EvaluationCriteriaViewModel">
     <Position X="2" Y="8.75" Width="2.75" />
     <TypeIdentifier>
       <HashCode>IAAAAAQAACAgAEgAAAAAAAAAABAAAAAAAAAgAAAAAAA=</HashCode>
-      <FileName>Controllers\VotesController.cs</FileName>
+      <FileName>Models\ViewModels\EvaluationCriteriaViewModel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="VoteResultViewModel">
     <Position X="9.75" Y="3.5" Width="4" />
     <TypeIdentifier>
       <HashCode>ACAAAAAAQAAAAFAAAAAAAAAAAAAAAIAAACAAAAAAAAA=</HashCode>
-      <FileName>Controllers\VotesController.cs</FileName>
+      <FileName>Models\ViewModels\VoteResultViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RegisterViewModel">
+    <Position X="10" Y="6.5" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAAAAAAAAAAAAAAACAQAAAAAAIAg=</HashCode>
+      <FileName>Models\ViewModels\RegisterViewModel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />
