@@ -22,7 +22,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="UserSearchViewModel">
-    <Position X="5" Y="11.5" Width="4" />
+    <Position X="10.25" Y="5.75" Width="4" />
     <TypeIdentifier>
       <HashCode>AAAAACAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAA=</HashCode>
       <FileName>Models\ViewModels\UserSearchViewModel.cs</FileName>
@@ -36,7 +36,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="PendingContactViewModel">
-    <Position X="6.75" Y="3.5" Width="2.5" />
+    <Position X="10.25" Y="7.25" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAAAEAAAAAAAAQAAAAAAAAAAAAAAAAAAQAAAAAAAAg=</HashCode>
       <FileName>Controllers\ContactsController.cs</FileName>
@@ -78,14 +78,14 @@
     </TypeIdentifier>
   </Class>
   <Class Name="VoteResultViewModel">
-    <Position X="9.75" Y="3.5" Width="4" />
+    <Position X="10.25" Y="3.25" Width="4" />
     <TypeIdentifier>
       <HashCode>ACAAAAAAQAAAAFAAAAAAAAAAAAAAAIAAACAAAAAAAAA=</HashCode>
       <FileName>Models\ViewModels\VoteResultViewModel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="RegisterViewModel">
-    <Position X="10" Y="6.5" Width="3.25" />
+    <Position X="6.75" Y="3.75" Width="3.25" />
     <TypeIdentifier>
       <HashCode>AAAAAEAAAAAAAAAAAAAAAAAAAAAAAAACAQAAAAAAIAg=</HashCode>
       <FileName>Models\ViewModels\RegisterViewModel.cs</FileName>
