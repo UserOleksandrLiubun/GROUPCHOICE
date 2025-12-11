@@ -18,11 +18,11 @@ else
             <div class="btn-group">
                 <form asp-action="Delete" method="post" class="p-1">
                     <input type="hidden" name="userName" value="@request.UserName" />
-                    <button type="submit" class="btn btn-danger btn-sm" asp-action="Delete">Delete</button>
+                    <button type="submit" class="btn btn-danger btn-sm" asp-action="Delete">Відхилити</button>
                 </form>
                 <form asp-action="Accept" method="post" class="p-1">
                     <input type="hidden" name="userName" value="@request.UserName" />
-                    <button type="submit" class="btn btn-success btn-sm">Accept</button>
+                    <button type="submit" class="btn btn-success btn-sm">Прийняти</button>
                 </form>
             </div>
         </div>
