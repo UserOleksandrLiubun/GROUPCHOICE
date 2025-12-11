@@ -20,7 +20,7 @@ public class CreateVoteViewModel
 
     [Required]
     [Display(Name = "Учасники")]
-    public List<string> UsersIDs { get; set; }
+    public List<string> UsersIDs { get; set; } = new();
     public List<string> Alternatives { get; set; } = new();
     public List<VoteCriteriaViewModel> Criteria { get; set; } = new();
     public List<SelectListItem> Contacts { get; set; } = new();
