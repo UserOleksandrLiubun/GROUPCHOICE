@@ -9,6 +9,7 @@ public class CreateVoteViewModel
     public string Title { get; set; }
     [Display(Name = "Приватне")]
     public bool IsPrivate { get; set; }
+    [Required(ErrorMessage = SharedResource.RequireMessage)]
     [Display(Name = "Опис")]
     public string Description { get; set; }
 
