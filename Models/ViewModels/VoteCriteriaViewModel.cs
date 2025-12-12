@@ -6,7 +6,7 @@ public class VoteCriteriaViewModel
     [Display(Name = "Назва")]
     public string Title { get; set; }
     [Display(Name = "Опис")]
-    public string Description { get; set; }
+    public string? Description { get; set; }
 
     [Range(0, 100)]
     [Display(Name = "Важливість")]
